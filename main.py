@@ -11,6 +11,10 @@ def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
 
+@app.route('/googleea2cd7e0a312099b.html')
+def google_search_console():
+    """Return a google_search_console verification code"""
+    return '<html><head></head><body>google-site-verification: googleea2cd7e0a312099b.html</body></html>'
 
 @app.errorhandler(404)
 def page_not_found(e):
