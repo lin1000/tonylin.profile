@@ -362,9 +362,10 @@
                 edges: edges
             };
             var options = {
+                clickToUse: true,
                 nodes: {
                     shape: 'dot',
-                    size: 16
+                    size: 48
                 },
                 physics: {
                     forceAtlas2Based: {
@@ -381,7 +382,83 @@
             };
             var network = new vis.Network(container, data, options);
 
+            clusterByCommunity(network);
+
         }
+
+        function clusterByGroup(network) {
+            network.on("selectNode", function(params) {
+                if (params.nodes.length == 1) {
+                    if (network.isCluster(params.nodes[0]) == true) {
+                        network.openCluster(params.nodes[0]);
+                    }
+                }
+            });            
+            
+            var clusterOptionsByData = {
+                joinCondition:function(childOptions) {
+                    return childOptions.group == 1;
+                },
+                clusterNodeProperties: {id:'cidCluster', borderWidth:3, shape: 'circle', label:'Community'}
+            };
+            network.cluster(clusterOptionsByData);
+        }
+
+        function clusterByHubsize(network) {
+            var clusterOptionsByData = {
+                processProperties: function(clusterOptions, childNodes, childEdges) {
+
+                    for(i=0 ; i < childNodes.length;i++){
+                        //console.log(childNodes[i])
+                        //console.log("childNodes.id=" + childNodes[i].id);
+                        break;
+                    }
+
+                    for(i=0 ; i < childEdges.length;i++){
+                        //console.log(childEdges[i])
+                        //console.log("childEdges.id=" + childEdges[i].id);
+                        break;
+                    }
+              
+                    clusterOptions.label = "[" + childNodes[i].group + "]";
+                    return clusterOptions;
+                },
+                clusterNodeProperties: {borderWidth:3, shape:'box', font:{size:30}}
+            };
+            network.clusterByHubsize(1, clusterOptionsByData);
+        }
+
+        function clusterByCommunity(network) {
+            network.on("selectNode", function(params) {
+                if (params.nodes.length == 1) {
+                    if (network.isCluster(params.nodes[0]) == true) {
+                        network.openCluster(params.nodes[0]);
+                    }
+                }
+            });         
+
+            var communities = [0,1,2,3,4,5,6,7,8,9,10];
+            var clusterOptionsByData;
+            for (var i = 0; i < communities.length; i++) {
+                var community = communities[i];
+                clusterOptionsByData = {
+                    joinCondition: function (childOptions) {
+                        return childOptions.group == community;
+                    },
+                    processProperties: function (clusterOptions, childNodes, childEdges) {
+                        var totalMass = 0;
+                        for (var i = 0; i < childNodes.length; i++) {
+                            //totalMass += childNodes[i].mass;
+                        }
+                        //clusterOptions.mass = totalMass;
+                        clusterOptions.label = "Social Community:" + community + " size:"+ childNodes.length
+                        return clusterOptions;
+                    },
+                    clusterNodeProperties: {id: 'cluster:' + community, borderWidth: 3, shape: 'circle', label:'Social Community:' + community }
+                };
+                network.cluster(clusterOptionsByData);
+            }
+        }               
 
       window.onload = function up(){
         draw();
@@ -393,6 +470,14 @@
 {% block content %}
 
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  {{ back_to_previous() }}
+
+ <h4>Visualizing Social Community using vis.js Network Graph</h4>
+
+  <span class="text-muted"><a href="http://visjs.org/docs/network/" target="_blank">Offical doucment is here </a></span>
+  </br>
+  <span class="text-muted"><a href="http://visjs.org/examples/network/other/clustering.html" target="_blank">Practical example for cluster options </a></span>
+  <br/>
   <div id="mynetwork"></div>
 </div>
 
