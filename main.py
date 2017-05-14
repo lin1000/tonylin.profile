@@ -7,10 +7,10 @@ app.config['DEBUG'] = True
 # the App Engine WSGI application server.
 
 
-@app.route('/hello')
-def hello():
+@app.route('/about')
+def about():
     """Return a friendly HTTP greeting."""
-    return '<script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script> Hello <div class="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="dark" data-vanity="i-chien-tony-lin-b49ba012"><a class="LI-simple-link" href=\'https://tw.linkedin.com/in/i-chien-tony-lin-b49ba012?trk=profile-badge\'>I-Chien (Tony) Lin</a></div>'
+    return '<script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>  <div class="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="dark" data-vanity="i-chien-tony-lin-b49ba012"><a class="LI-simple-link" href=\'https://tw.linkedin.com/in/i-chien-tony-lin-b49ba012?trk=profile-badge\'>I-Chien (Tony) Lin</a></div>'
 
 @app.route('/googleea2cd7e0a312099b.html')
 def google_search_console():
