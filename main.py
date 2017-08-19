@@ -7,6 +7,7 @@ app.config['DEBUG'] = True
 # the App Engine WSGI application server.
 
 
+
 @app.route('/about')
 def about():
     """Return a friendly HTTP greeting."""
@@ -30,6 +31,11 @@ def social_community_graph():
 def social_community_graph_vis_network():
     """Demonstrating social community graphs."""
     return render_template('social_community_graph_vis_network.html')
+
+@app.route('/')
+def landing_page():
+    """landing page usign very cool visualiztion"""
+    return render_template('landing_page.html')
 
 @app.errorhandler(404)
 def page_not_found(e):
